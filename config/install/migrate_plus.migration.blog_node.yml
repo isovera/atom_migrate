@@ -1,0 +1,92 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - atom_migrate
+id: blog_node
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: null
+migration_group: atom
+label: 'Blog posts'
+source:
+  fields:
+    -
+      name: guid
+      label: Guid
+      selector: 'atom:id'
+    -
+      name: content_format
+      label: Feed item type
+      selector: 'nc:content_formats/nc:content_format[1]/@label'
+    -
+      name: title
+      label: Title
+      selector: 'atom:title'
+    -
+      name: description
+      label: Body
+      selector: 'atom:content'
+    -
+      name: published_at
+      label: 'Published date/time'
+      selector: 'atom:published'
+    -
+      name: modified_at
+      label: 'Last modification'
+      selector: 'atom:updated'
+process:
+  type:
+    plugin: default_value
+    default_value: blog_post
+  blog_type:
+    -
+      plugin: static_map
+      source: content_format
+      map:
+        Blog: Blog
+    -
+      plugin: skip_on_empty
+      method: row
+  title:
+    -
+      plugin: get
+      source: title
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: default_value
+      default_value: 'This article needs no title'
+  uid:
+    plugin: default_value
+    default_value: 9
+  sticky:
+    plugin: default_value
+    default_value: 0
+  created:
+    plugin: callback
+    source: published_at
+    callable: strtotime
+  changed:
+    plugin: callback
+    source: modified_at
+    callable: strtotime
+  field_paragraph:
+    plugin: split_into_paragraphs
+    source: description
+  field_blog_type:
+    plugin: default_value
+    default_value: 1
+  field_featured_image:
+    plugin: migration_lookup
+    migration: blog_featured_image
+    no_stub: true
+    source: guid
+destination:
+  plugin: 'entity:node'
+migration_dependencies:
+  required:
+    - blog_featured_image

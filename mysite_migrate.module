@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Custom code for the Atom migration.
+ */
+
+use Drupal\migrate\MigrateExecutable;
+use Drupal\migrate\MigrateMessage;
+
+/**
+ * Implements hook_cron().
+ *
+ * Run the migrations.
+ */
+function atom_migrate_cron() {
+  $manager = Drupal::service('plugin.manager.migration');
+  $migration_ids = ['blog_image', 'blog_featured_image', 'blog_node'];
+  foreach ($migration_ids as $migration_id) {
+    $migration = $manager->createInstance($migration_id);
+    $executable = new MigrateExecutable($migration, new MigrateMessage());
+    $executable->import();
+  }
+}

@@ -1,0 +1,7 @@
+name: 'Atom migrate'
+type: module
+description: 'Import articles from an Atom feed.'
+core: 8.x
+package: Atom
+dependencies:
+  - migrate_plus

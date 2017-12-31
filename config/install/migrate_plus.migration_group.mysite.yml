@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - atom_migrate
+id: atom
+label: 'Atom Imports'
+description: 'Import articles from an Atom feed.'
+source_type: 'XML files'
+module: null
+shared_configuration:
+  # Specifying 'source' here means that this configuration will be merged into
+  # the 'source' configuration of each migration.
+  source:
+    plugin: url
+    data_fetcher_plugin: http
+    data_parser_plugin: xml
+    namespaces:
+      atom: 'http://www.w3.org/2005/Atom'
+    urls: 'https://api.example.com/v2/feed?format=atom'
+    item_selector: '/feed/entry'
+    ids:
+      guid:
+        type: string

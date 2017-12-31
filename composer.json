@@ -1,0 +1,8 @@
+{
+  "name": "drupal/atom_migrate",
+  "type": "drupal-module",
+  "description": "Import articles from an Atom feed.",
+  "keywords": ["Drupal"],
+  "minimum-stability": "dev",
+  "require": { }
+}
